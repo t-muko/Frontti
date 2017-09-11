@@ -6,9 +6,16 @@
 /**
  * Main AngularJS Web Application
  */
-var app = angular.module('tutorialWebApp', [
-  'ngRoute'
-]);
+var app = angular.module('WebApp', [
+  'ngRoute','ngSanitize'
+]).config(function($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    // Allow same origin resource loads.
+    'self',
+    // Allow loading from our assets domain.  Notice the difference between * and **.
+    'http://r7s4gmfu66.execute-api.eu-west-1.amazonaws.com/Test*'
+  ]);
+});
 
 /**
  * Configure the Routes
@@ -17,15 +24,7 @@ app.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
     // Home
     .when("/", {templateUrl: "partials/home.html", controller: "PageCtrl"})
-    // Pages
-    .when("/about", {templateUrl: "partials/about.html", controller: "PageCtrl"})
-    .when("/faq", {templateUrl: "partials/faq.html", controller: "PageCtrl"})
-    .when("/pricing", {templateUrl: "partials/pricing.html", controller: "PageCtrl"})
-    .when("/services", {templateUrl: "partials/services.html", controller: "PageCtrl"})
-    .when("/contact", {templateUrl: "partials/contact.html", controller: "PageCtrl"})
-    // Blog
-    .when("/blog", {templateUrl: "partials/blog.html", controller: "BlogCtrl"})
-    .when("/blog/post", {templateUrl: "partials/blog_item.html", controller: "BlogCtrl"})
+
     // else 404
     .otherwise("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"});
 }]);
